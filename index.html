@@ -1,20 +1,80 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <script src="js/campo-minado.js"></script>
-    </head>
-    <body>
-        <div id="exibir-execucao"></div>
 
-        <script>
-            var campoMinado = new CampoMinado();
+<head>
+    <title></title>
+    <script src="js/campo-minado.js"></script>
+    <script src="js/script.js"></script>
+</head>
+
+<body>
+    <div id="exibir-execucao"></div>
+
+    <script>
+        var campoMinado = new CampoMinado();
+
+
+        document.getElementById('exibir-execucao').innerHTML += '----------- Início do jogo -----------';
+        document.getElementById('exibir-execucao').innerHTML += '<pre>' + campoMinado.Tabuleiro() + '</pre>';
+        
+        // Realize sua codificação a partir deste ponto, boa sorte!
+        
+        var resultado = document.getElementById('exibir-execucao')
+        let arrTabuleiro = transformarTabuleiroArray()
+        
+        let aoRedor 
+        let resultadoBomba 
+        let resultadoPosicao 
+        let teste = 0
+        let resultadoBombaFixo = []
+        
+        while (campoMinado.JogoStatus() == 0){
             
+            aoRedor = encontraCasasEmVolta(arrTabuleiro)
+            resultadoBomba = encontrarBomba(aoRedor, arrTabuleiro)
+            aoRedor = encontraCasasEmVolta(arrTabuleiro)
+            resultadoPosicao = encontrarPosicao(aoRedor, arrTabuleiro)
+
+            if (campoMinado.JogoStatus() == 0) {
+                resultado.innerHTML += '----------- Status: Jogo em aberto -----------';
+                resultado.innerHTML += '<pre>' + campoMinado.Tabuleiro() + '</pre>';
+                
+                for (let print = 0; print < resultadoBomba.length; print+=2) {
+                    resultado.innerHTML += '<pre>' + `Bomba Encontrada: Linha: (${resultadoBomba[print]}) / Coluna: (${resultadoBomba[print+1]})` + '</pre>';
+                }
+                
+                resultadoBombaFixo = resultadoBomba.concat(resultadoBombaFixo)
+                resultadoBomba = []
+            }
+            if (campoMinado.JogoStatus() == 0) {
+                resultado.innerHTML += '----------- Status: Jogo em aberto -----------';
+                resultado.innerHTML += '<pre>' + campoMinado.Tabuleiro() + '</pre>';
+                
+                for (let print2 = 0; print2 < resultadoPosicao.length; print2+=2) {
+                    resultado.innerHTML += '<pre>' + `Abrindo casa: linha:(${resultadoPosicao[print2]}) / Coluna:(${resultadoPosicao[print2+1]})` + '</pre>';
+                    campoMinado.Abrir(resultadoPosicao[print2], resultadoPosicao[print2+1])
+                }
+                let tabuleiroAtualizado = campoMinado.Tabuleiro()
+                atualizarTabuleiro(tabuleiroAtualizado, resultadoPosicao)
             
-            document.getElementById('exibir-execucao').innerHTML += '----------- Início do jogo -----------';
-            document.getElementById('exibir-execucao').innerHTML += '<pre>' + campoMinado.Tabuleiro() + '</pre>';
+            resultadoPosicao = []
             
-            // Realize sua codificação a partir deste ponto, boa sorte!
-        </script>
-    </body>
+        }
+        
+
+        if (campoMinado.JogoStatus() == 1) {
+            resultado.innerHTML += '----------- Status: Vitoria -----------';
+            resultado.innerHTML += '<pre>' + campoMinado.Tabuleiro() + '</pre>';
+
+        }
+        if (campoMinado.JogoStatus() == 2) {
+            resultado.innerHTML += '----------- Status: GameOver -----------';
+            resultado.innerHTML += '<pre>' + campoMinado.Tabuleiro() + '</pre>';
+
+        }
+        teste++
+    }
+    </script>
+</body>
+
 </html>

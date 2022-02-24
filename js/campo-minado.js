@@ -64,7 +64,7 @@ function CampoMinado() {
 
         return tabuleiro;
     }
-
+    
     /**
      * Método responsável por abrir uma casa do tabuleiro e alterar o status do jogo para:
      * GameOver(2) caso você abra uma bomba;
